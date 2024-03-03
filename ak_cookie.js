@@ -73,14 +73,16 @@ let productNum = $.read('BM_ProductNum');
 let exchangeNum = $.read('BM_ExchangeNum') || '100';
 let cookie = $.read('CookieBM');
 let user = {};
-console.log("dja");
+
 (async function() {
-    $.notify('BiliManga', '积分兑换', '开始兑换');
+    console.log('是否是quanx ' + $.isQuanX);
+    const cookieVal = $request.headers['Cookie'] 
+    console.log('cookie:'+ cookieVal);
+    $notify('cookie', 'cookie', cookieVal);
 	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
 	// 	GetUserPoint(), 
 	// 	ListProduct() 
 	// ]);
-    console.log("开始兑换");
-	await ExchangeProduct(); 
+	// await ExchangeProduct(); 
 	$.done(); 
 })();
