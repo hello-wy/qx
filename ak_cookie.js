@@ -104,7 +104,6 @@ let user = {};
 
 (async function() {
     const cookieVal = $request.headers['Cookie']
-    $.read('cookie_ak') ? $.notify('cookie', 'cookie', 'cookie已存在') :$.notify('cookie', 'cookie', 'cookie不存在')
     $.write(cookieVal, 'cookie_ak');
 	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
 	// 	GetUserPoint(), 

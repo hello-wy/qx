@@ -2,11 +2,22 @@ name: Manual Workflow
 on:
   repository_dispatch:
     types: [ak]
-    inputs: 
-    schedule:          # 定时任务 第一个填分钟 第二个填小时
-      - cron:  59 9 * * *   # 想要运行的小时-8即为填入值例如：bj11点运行 填11-8=3
+
 jobs:
-  say_hello:
+  build:
     runs-on: ubuntu-latest
+    
     steps:
-    - run: echo Hello ${{ github.event.inputs.name }}!
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'  # Replace 'x' with the desired version of Python
+    
+    - name: Install requests library
+      run: python -m pip install requests
+
+    - name: Run Python script
+      run: python script/ak.py ${{ github.event.client_payload.url_parameter }}
