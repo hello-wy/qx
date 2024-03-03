@@ -28,10 +28,38 @@ function wuy() {
 		}
 		return response
 	}
+    // 将获得的cookies信息储存起来
+    this.write = (value, key) => {
+        if (isQuanX) return $prefs.setValueForKey(value, key);
+        if (isSurge) return $persistentStore.write(value, key);
+        if (isNode) {
+            try {
+                if (!node.fs.existsSync(NodeSet)) node.fs.writeFileSync(NodeSet, JSON.stringify({}));
+                const dataValue = JSON.parse(node.fs.readFileSync(NodeSet));
+                if (value) dataValue[key] = value;
+                if (!value) delete dataValue[key];
+                return node.fs.writeFileSync(NodeSet, JSON.stringify(dataValue));
+            } catch (er) {
+                return AnError("Node.js持久化写入", null, er);
+            }
+        }
+    };
 	this.read = (key) => {
 		if (isQuanX) return $prefs.valueForKey(key)
 		if (isSurge) return $persistentStore.read(key)
 	}
+    // 异常信息
+    const AnError = (name, keyname, er, resp, body) => {
+        if (typeof (merge) != "undefined" && keyname) {
+            if (!merge[keyname].notify) {
+                merge[keyname].notify = `${ name }: 异常, 已输出日志 ‼️`;
+            } else {
+                merge[keyname].notify += `\n${ name }: 异常, 已输出日志 ‼️ (2)`;
+            }
+            merge[keyname].error = 1;
+        }
+        return console.log(`\n‼️${ name }发生错误\n‼️名称: ${ er.name }\n‼️描述: ${ er.message }${ JSON.stringify(er).match(/"line"/) ? `\n‼️行列: ${ JSON.stringify(er) }` : `` }${ resp && resp.status ? `\n‼️状态: ${ resp.status }` : `` }${ body ? `\n‼️响应: ${ resp && resp.status != 503 ? body : `Omit.` }` : `` }`);
+    };
 	this.notify = (title, subtitle, message) => {
 		if (isQuanX) $notify(title, subtitle, message)
 		if (isSurge) $notification.post(title, subtitle, message)
@@ -75,12 +103,14 @@ let cookie = $.read('CookieBM');
 let user = {};
 
 (async function() {
-    const cookieVal = $request.headers['Cookie'] 
+    const cookieVal = $request.headers['Cookie']
+    $.read('cookie_ak') ? $.notify('cookie', 'cookie', 'cookie已存在') :$.notify('cookie', 'cookie', 'cookie不存在')
     $.notify('cookie', 'cookie', cookieVal);
+    $.write(cookieVal, 'cookie_ak');
 	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
 	// 	GetUserPoint(), 
 	// 	ListProduct() 
 	// ]);
-	// await ExchangeProduct(); 
+	// await ExchangeProduct();
 	$.done(); 
 })();
