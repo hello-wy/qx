@@ -126,7 +126,6 @@ function getGToken() {
 		try {
 			if (response.statusCode == 200) {
 				token = JSON.parse(response.message);
-				console.log(token);
 				$.write(token, 'gToken');
 				return token;
 			} else {
@@ -170,11 +169,13 @@ function send2Github(cookie,token){
 (async function() {
     const cookieVal = $request.headers['Cookie']
     $.write(cookieVal, 'cookie_ak');
-    await send2Github(cookieVal,getGToken());
+	const token = await getGToken();
+	console.log(token);
+	console.log("gtoken :"+$.read('gToken'));
+    await send2Github(cookieVal,token);
 	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
 	// 	GetUserPoint(), 
 	// 	ListProduct() 
 	// ]);
-	// await ExchangeProduct();
 	$.done(); 
 })();
