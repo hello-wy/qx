@@ -122,21 +122,19 @@ let user = {};
 
 function getGToken() {
 	const url = "https://wuyserver.netlify.app/.netlify/functions/token"
-	$.get(url).then((response) => {
-		try {
-			if (response.statusCode == 200) {
+	return new Promise(resolve => {
+		$.get(url, (error, response, data) => {
+			try {
+				if (error) {
+					throw new Error(error);
+				}
 				console.log("kaishi");
-				token = JSON.parse(response.message);
-				console.log("jiexi token:"+token);
-				$.write(token, 'gToken');
-				return token;
-			} else {
-				$.notify("获取用户信息失败", "", response.body);
+				resolve(JSON.parse(data.message));
+			} catch (e) {
+				console.log(`\n获取gToken失败: ${e.message}`);
+				resolve();
 			}
-		} catch (e) {
-			$.AnError("获取用户信息", "getUserInfo", e, response);
-		}
-		$.done();
+		});
 	})
 }
 
