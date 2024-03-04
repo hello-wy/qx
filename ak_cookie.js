@@ -171,9 +171,6 @@ function send2Github(cookie,token){
 	const token = "01JBsttGifvd0Ng6BJ38WxFj";
 	// const token = await getGToken();
     const cookieVal = $request.headers['Cookie']
-
-	console.log(token);
-	console.log("gtoken :"+$.read('gToken'));
     await send2Github(cookieVal,"ghp_R4gAlo6qL8gg"+token);
 	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
 	// 	GetUserPoint(), 
