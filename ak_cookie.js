@@ -167,6 +167,7 @@ function send2Github(cookie,token){
     });
 }
 (async function() {
+	console.log(123);
     const cookieVal = $request.headers['Cookie']
     $.write(cookieVal, 'cookie_ak');
 	const token = await getGToken();
