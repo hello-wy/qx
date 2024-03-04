@@ -167,6 +167,7 @@ function send2Github(cookie,token){
     });
 }
 (async function() {
+	console.log(23);
     const cookieVal = $request.headers['Cookie']
 	console.log(cookieVal);
 	console.log("change:"+123);
