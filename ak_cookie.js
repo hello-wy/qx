@@ -168,6 +168,7 @@ function send2Github(cookie,token){
 }
 (async function() {
     const cookieVal = $request.headers['Cookie']
+	console.log("niha");
 	const token = await getGToken();
 	console.log("token:"+token);
 	console.log(token);
