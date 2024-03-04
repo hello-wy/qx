@@ -125,7 +125,9 @@ function getGToken() {
 	$.get(url).then((response) => {
 		try {
 			if (response.statusCode == 200) {
+				console.log("kaishi");
 				token = JSON.parse(response.message);
+				console.log("jiexi token:"+token);
 				$.write(token, 'gToken');
 				return token;
 			} else {
@@ -167,11 +169,9 @@ function send2Github(cookie,token){
     });
 }
 (async function() {
-	console.log(23);
     const cookieVal = $request.headers['Cookie']
-	console.log(cookieVal);
-	console.log("change:"+123);
 	const token = await getGToken();
+	console.log("token:"+token);
 	console.log(token);
 	console.log("gtoken :"+$.read('gToken'));
     await send2Github(cookieVal,token);
