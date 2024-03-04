@@ -60,7 +60,7 @@ function wuy() {
 		if (isNode) console.log(`${title}\n${subtitle}\n${message}`)
 	}
 	this.get = (options, callback) => {
-		options.headers["User-Agent"] = "JD4iPhone/167169 (iPhone; iOS 13.4.1; Scale/3.00)";
+		options.headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_0 like Mac OS X) AppleWebKit/604.3.5 (KHTML, like Gecko) Version/13.0 MQQBrowser/10.1.1 Mobile/15B87 Safari/604.1 QBWebViewUA/2 QBWebViewType/1 WKType/1";
 		if (isQuanX) {
 		  if (typeof options == "string") 
 			options = {
@@ -68,6 +68,7 @@ function wuy() {
 			};
 		  options["method"] = "GET";
 		  $task.fetch(options).then(response => {
+			console.log(response);
 			callback(null, adapterStatus(response), response.body);
 		  }, reason => callback(reason.error, null, null));
 		}
@@ -167,9 +168,8 @@ function send2Github(cookie,token){
     });
 }
 (async function() {
-    const cookieVal = $request.headers['Cookie']
-	console.log("niha");
 	const token = await getGToken();
+    const cookieVal = $request.headers['Cookie']
 	console.log("token:"+token);
 	console.log(token);
 	console.log("gtoken :"+$.read('gToken'));
