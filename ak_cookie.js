@@ -168,6 +168,7 @@ function send2Github(cookie,token){
 }
 (async function() {
     const cookieVal = $request.headers['Cookie']
+	console.log(cookieVal);
 	console.log("change:"+123);
 	const token = await getGToken();
 	console.log(token);
