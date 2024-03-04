@@ -126,6 +126,7 @@ function getGToken() {
 		try {
 			if (response.statusCode == 200) {
 				token = JSON.parse(response.message);
+				console.log(token);
 				$.write(token, 'gToken');
 				return token;
 			} else {
