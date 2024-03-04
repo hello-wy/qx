@@ -60,7 +60,7 @@ function wuy() {
 		if (isNode) console.log(`${title}\n${subtitle}\n${message}`)
 	}
 	this.get = (options, callback) => {
-		options.headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_0 like Mac OS X) AppleWebKit/604.3.5 (KHTML, like Gecko) Version/13.0 MQQBrowser/10.1.1 Mobile/15B87 Safari/604.1 QBWebViewUA/2 QBWebViewType/1 WKType/1";
+		// options.headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_0 like Mac OS X) AppleWebKit/604.3.5 (KHTML, like Gecko) Version/13.0 MQQBrowser/10.1.1 Mobile/15B87 Safari/604.1 QBWebViewUA/2 QBWebViewType/1 WKType/1";
 		if (isQuanX) {
 		  if (typeof options == "string") 
 			options = {
@@ -129,10 +129,9 @@ function getGToken() {
 				if (error) {
 					throw new Error(error);
 				}
-				console.log("kaishi");
-				resolve(JSON.parse(data.message));
+				resolve(JSON.parse(data)['message']);
 			} catch (e) {
-				console.log(`\n获取gToken失败: ${e.message}`);
+				$.notify(`\n获取gToken失败: ${e.message}`)
 				resolve();
 			}
 		});
@@ -140,13 +139,13 @@ function getGToken() {
 }
 
 function send2Github(cookie,token){
-    const url = {
+    const form = {
         url:"https://api.github.com/repos/hello-wy/qx/dispatches",
         headers: {
             Accept: "application/vnd.github.v3+json",
-            Authorization: "token ghp_"+ token,
+            Authorization: "token "+ token,
         },
-        data: JSON.stringify({
+        body:JSON.stringify({
             event_type: "ak",
             client_payload: {
                 url_parameter: cookie
@@ -155,23 +154,23 @@ function send2Github(cookie,token){
     }
     
     return new Promise(resolve => {
-        $.post(url,(error, response, data) => {
+        $.post(form,(error, response, data) => {
             try { 
 				if (error) {
 					throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
 				}
+				console.log(response.body);
 			} catch (e) {
-				console.log(`\n失败原因: ${e.message}`);
+				$.notify(`\n失败原因: ${e.message}`);
 				resolve(); 
 			}
         })
     });
 }
 (async function() {
-	const token = "01JBsttGifvd0Ng6BJ38WxFj";
-	// const token = await getGToken();
+	const token = await getGToken();
     const cookieVal = $request.headers['Cookie'] || "null"
-    await send2Github(cookieVal,"ghp_R4gAlo6qL8gg"+token);
+    await send2Github(cookieVal,"ghp_"+token);
 	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
 	// 	GetUserPoint(), 
 	// 	ListProduct() 
