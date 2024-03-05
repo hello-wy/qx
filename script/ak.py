@@ -41,6 +41,7 @@ def send_request(data):
         try:
             res = requests.post(url=reward_url, headers=headers, data=json.dumps(data))
             response_json = res.json()
+            print(res.text)
             if response_json.get("code") != 1014:
                 print(res.text)
             # 成功  奖品兑换完 奖品已经领过了
@@ -48,6 +49,7 @@ def send_request(data):
                 break
             time.sleep(1)
         except Exception as e:
+            print(e)
             pass
 
 threads = []
