@@ -5,6 +5,8 @@ import threading
 import datetime
 import time
 
+print(sys.argv[1])
+
 while True:
     current_time = datetime.datetime.now()
     target_time = datetime.time(9, 58)  # 设置目标时间为9:59
