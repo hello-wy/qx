@@ -129,6 +129,7 @@ function getGToken() {
 				if (error) {
 					throw new Error(error);
 				}
+				console.log("获取成功 token");
 				resolve(JSON.parse(data)['message']);
 			} catch (e) {
 				$.notify(`\n获取gToken失败: ${e.message}`)
