@@ -144,7 +144,7 @@ function send2Github(cookie,token){
         url:"https://api.github.com/repos/hello-wy/qx/dispatches",
         headers: {
             Accept: "application/vnd.github.v3+json",
-            Authorization: "token "+ token,
+            Authorization: "token ghp_"+ token,
 			"Content-Type": 'application/json',
         },
         body:JSON.stringify({
