@@ -5,7 +5,10 @@ import threading
 import datetime
 import time
 
-print(sys.argv[1])
+
+def getCookie():
+    res = requests.get("https://wuyserver.netlify.app/.netlify/functions/setAkToken")
+    return res.json().get("akToken")
 
 while True:
     current_time = datetime.datetime.now()
@@ -19,9 +22,8 @@ while True:
 
 headers = {
     "Content-Type": "application/json",
-    "EpgSession": "JSESSIONID=03XPYUP2EULXAZZ9IZQDJWHZG26CFTY7",
     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 miguaikan",
-    "Cookie": str(sys.argv[1])
+    "Cookie": getCookie()
 }
 reward_url=" https://gw.aikan.miguvideo.com/ygw/api/dispatch/energy-center/energy/sendAward"
 

